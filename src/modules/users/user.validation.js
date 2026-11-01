@@ -30,3 +30,21 @@ export const registerUserSchema = z.object({
       "Password cannot exceed 72 bytes"
     ),
 }).strict();
+
+export const loginUserSchema = z.object({
+  phone: z
+    .string()
+    .trim()
+    .regex(
+      /^\+[1-9]\d{7,14}$/,
+      "Enter a valid phone number with country code"
+    ),
+
+  password: z
+    .string()
+    .min(1, "Password is required")
+    .refine(
+      (value) => Buffer.byteLength(value, "utf8") <= 72,
+      "Invalid password"
+    ),
+}).strict();
